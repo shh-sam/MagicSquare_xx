@@ -1,0 +1,62 @@
+# MagicSquare — Cursor Rules (초안)
+
+## 프로젝트 개요
+4×4 **부분 마방진** 검증·판정. Mom Test 진짜 문제: 10선 합 검증 후 **틀린 줄 즉시 판정**.
+상세: `docs/PRD.md`, `Report/01.MagicSquare_ProblemDefinition_Report.md`
+
+## 도메인 규칙 (불변)
+- 격자: **4×4**, 빈칸은 **0** 정확히 **2개**, 나머지는 **1~16** 각 1회
+- **마방진 상수 = 34** (10선: 행4 + 열4 + 대각2)
+- Solver 출력: `int[6]` → `[r1, c1, n1, r2, c2, n2]` — 좌표 **1-index** (행·열 1~4)
+- 오류 코드 **E001~E007**는 **Boundary** 전용
+  - **Entity는 E001~E005 처리 금지** (입력·형식·경계 검증은 Boundary/Control 책임)
+  - Entity는 순수 도메인(합 검증, 불일치 줄, 빈칸 채움 로직)만
+
+## 아키텍처 — ECB
+```
+Boundary → Control → Entity
+```
+| Layer | 책임 | import |
+|-------|------|--------|
+| **boundary** | 입출력, E001~E007, UI/CLI | control |
+| **control** | 유스케이스 조율, Boundary↔Entity 변환 | entity, boundary(역방향 금지) |
+| **entity** | Rule·Command·(Skill) 순수 로직 | **`*` import 금지** — 표준 라이브러리만 |
+
+패키지 예: `src/magicsquare/boundary/`, `control/`, `entity/`
+
+## Dual-Track
+| Track | 범위 | Mock |
+|-------|------|------|
+| **Logic** | entity, control | **Domain Mock 금지** — 실제 객체·순수 함수만 |
+| **UI** | boundary | Mock **허용** (입력/출력·외부 I/O 격리) |
+
+Logic 테스트는 entity/control 직접 호출. UI 테스트는 boundary만.
+
+## MagicConstant — SSOT
+- `34`, `16`, `4`(격자 크기), 빈칸 `0` 등 도메인 상수는 **한 곳**에 정의 (예: `entity/constants.py` 또는 `MagicConstant` 클래스)
+- 소스·테스트 전역에 `34`/`16` **리터럴 산재 금지** — 상수 import 사용
+
+## TDD (엄격)
+1. **RED** → **GREEN** → **REFACTOR** 순서 준수
+2. **금지**: assert 완화, `@pytest.mark.skip`, `xfail`, 테스트 삭제로 GREEN 달성
+3. 실패 시 **구현**을 고친다. 테스트는 요구사항의 증거다.
+
+### 테스트 ID · 파일명
+| Track | ID 접두 | 파일명 |
+|-------|---------|--------|
+| Logic (Domain) | `D-*` | `tests/test_d_*.py` |
+| UI (Boundary) | `U-*` | `tests/test_u_*.py` |
+
+함수/메서드 docstring 또는 `@pytest.mark`에 ID 명시 (예: `D-01`, `U-03`).
+
+## AI 행동 규칙
+- **응답 언어: 한국어**
+- TDD 작업 시 매 턴 선언: **Phase** (RED/GREEN/REFACTOR) · **Layer** (boundary/control/entity) · **Track** (Logic/UI)
+- **최소 diff**: 요청 범위 밖 파일·기능 추가 금지
+- **git commit / push**: 사용자가 명시적으로 요청할 때만
+- 표면 문제 금지: 「Solver·GridUI 프로그램 만든다」를 목표로 삼지 않음 — 검증·판정·재현 우선
+
+## 금지 · 주의
+- Entity에 Boundary 오류(E001~E005) 분기 넣기
+- Control/Entity에서 Domain Mock으로 GREEN 만들기
+- PRD Out of Scope(전체 GridUI, Solver 우선)를 사용자 요청 없이 구현
