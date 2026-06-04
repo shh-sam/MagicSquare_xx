@@ -83,10 +83,10 @@
 
 | ID | RED 할 일 | 완료 |
 |----|-----------|:----:|
-| D-LOC-01 | `tests/entity/test_d_loc_01.py` — G1 → `[(1,1), (3,1)]` (0-index, row-major), pytest **FAIL** | [ ] |
+| D-LOC-01 | `tests/entity/test_d_loc_01.py` — G1 → `[(2,2), (3,3)]` (1-index, row-major), pytest **PASS** (GREEN) | [x] |
 | D-LOC-02 | G1 → `len(result) == 2`, pytest **FAIL** | [ ] |
 | D-LOC-03 | G2 → `[(0,2), (2,3)]`, pytest **FAIL** | [ ] |
-| — | `reference.md`에 `D-LOC-01`~`03` 등록 | [ ] |
+| — | `reference.md`에 `D-LOC-01`~`03` 등록 | [x] (D-LOC-01 GREEN) |
 | — | `python -m pytest tests/entity/test_d_loc_01.py -v` — 묶음 FAIL 확인 | [ ] |
 | — | `/red-skeleton` — 테스트 스켈레톤만 생성 (구현 없음) | [ ] |
 
@@ -103,7 +103,7 @@
 
 ### Track B-1 — Logic · 전체 ECB (Out of Scope · 요청 시만)
 
-- [ ] **D-LOC-01** — `find_blank_coords(G1)` → `[(2,2), (3,3)]` (1-index)
+- [x] **D-LOC-01** — `find_blank_coords(G1)` → `[(2,2), (3,3)]` (1-index) · Golden: `tests/golden/d_loc_01_g1_blank_coords.golden.json`
 - [ ] **D-MIS-01** — `find_not_exist_nums(G1)` → `[7, 10]`
 - [ ] **D-VAL-01** — `is_magic_square(G0)` → `True`
 - [ ] **D-SOL-01** — `solution(G1)` Step A 성공

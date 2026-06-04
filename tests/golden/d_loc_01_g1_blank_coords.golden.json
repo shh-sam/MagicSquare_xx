@@ -1,0 +1,7 @@
+{
+  "test_id": "D-LOC-01",
+  "fixture": "grid_g1",
+  "function": "find_blank_coords",
+  "coordinate_system": "1-index-row-major",
+  "expected": [[2, 2], [3, 3]]
+}

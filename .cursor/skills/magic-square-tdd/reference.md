@@ -10,5 +10,9 @@
 | D-06 | `tests/test_d_report.py` | `ReportMismatchLines` — 단일 줄 불일치 (line_id, expected, actual) |
 | D-07 | `tests/test_d_report.py` | `ReportMismatchLines` — 복수 줄 불일치 |
 | D-08 | `tests/test_d_regression.py` | 동일 grid → 동일 출력 (AC-3) |
+| D-LOC-01 | `tests/entity/test_d_loc_01.py` | `find_blank_coords(G1)` → `[(2,2),(3,3)]` 1-index · **GREEN PASS** |
+| D-LOC-02 | `tests/entity/test_d_loc_02.py` | G1 → `len(result) == 2` (후속 RED) |
+| D-LOC-03 | `tests/entity/test_d_loc_03.py` | G2 → `[(0,2),(2,3)]` 0-index (후속 RED) |
 
-> U-* (UI Track): 후속 세션 — `tests/test_u_*.py`
+> U-* (UI Track): 후속 세션 — `tests/test_u_*.py`  
+> Golden Master (D-LOC-01): `tests/golden/d_loc_01_g1_blank_coords.golden.json`
