@@ -15,4 +15,5 @@
 | D-LOC-03 | `tests/entity/test_d_loc_03.py` | G2 → `[(0,2),(2,3)]` 0-index (후속 RED) |
 
 > U-* (UI Track): 후속 세션 — `tests/test_u_*.py`  
-> Golden Master (D-LOC-01): `tests/golden/d_loc_01_g1_blank_coords.golden.json`
+> Golden Master (D-LOC-01): `tests/golden/d_loc_01_g1_blank_coords.golden.json`  
+> Golden Master (D-SOL-01): `tests/golden/d_sol_01_g1_step_a.approved.txt` · `tests/_approval.py`
